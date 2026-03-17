@@ -3,7 +3,7 @@ class ECFieldElementFp {
   final BigInt q;
 
   ECFieldElementFp(this.q, this.x) {
-    // TODO if (x.compareTo(q) >= 0) error
+    // todo if (x.compareTo(q) >= 0) error
   }
 
   /// 判断相等
@@ -75,10 +75,12 @@ class ECPointFp {
     if (isInfinity()) return other.isInfinity();
     if (other.isInfinity()) return isInfinity();
 
-    final u = (other.y!.toBigInteger() * z - y!.toBigInteger() * other.z) % curve.q;
+    final u =
+        (other.y!.toBigInteger() * z - y!.toBigInteger() * other.z) % curve.q;
     if (u != BigInt.zero) return false;
 
-    final v = (other.x!.toBigInteger() * z - x!.toBigInteger() * other.z) % curve.q;
+    final v =
+        (other.x!.toBigInteger() * z - x!.toBigInteger() * other.z) % curve.q;
     return v == BigInt.zero;
   }
 
@@ -125,7 +127,8 @@ class ECPointFp {
     final y3 = (w6 * (w9 * w1 % q - w11) - w4 * w10) % q;
     final z3 = (w10 * w8) % q;
 
-    return ECPointFp(curve, curve.fromBigInteger(x3), curve.fromBigInteger(y3), z3);
+    return ECPointFp(
+        curve, curve.fromBigInteger(x3), curve.fromBigInteger(y3), z3);
   }
 
   ECPointFp twice() {
@@ -149,7 +152,8 @@ class ECPointFp {
     final y3 = (w1 * (w4 * BigInt.from(4) - w6) - w5 * BigInt.from(2) * w3) % q;
     final z3 = (w2 * w5) % q;
 
-    return ECPointFp(curve, curve.fromBigInteger(x3), curve.fromBigInteger(y3), z3);
+    return ECPointFp(
+        curve, curve.fromBigInteger(x3), curve.fromBigInteger(y3), z3);
   }
 
   ECPointFp multiply(BigInt k) {
@@ -167,7 +171,6 @@ class ECPointFp {
       final kBit = (k >> i) & BigInt.one == BigInt.zero;*/
 
       final k3Bit = (k3 >> i).isOdd;
-      ;
       final kBit = (k >> i).isOdd;
 
       if (k3Bit != kBit) {
@@ -245,4 +248,3 @@ String leftPad(String input, int num) {
   if (input.length >= num) return input;
   return List.filled(num - input.length, '0').join() + input;
 }
-

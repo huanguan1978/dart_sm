@@ -1,3 +1,5 @@
+// ignore_for_file: constant_identifier_names, non_constant_identifier_names
+
 import 'dart:convert';
 import 'dart:math';
 import 'dart:typed_data';
@@ -236,7 +238,6 @@ class SM2 {
       {bool der = false,
       bool hash = false,
       String userId = '1234567812345678'}) {
-
     String hashHex = SMUtils.utf8ToHexString(msg);
     if (hash) {
       hashHex = _getHash(hashHex, publicKey, userId);
@@ -293,14 +294,14 @@ class SM2 {
       px = leftPad(point.getX().toBigInteger().toRadixString(16), 64);
       py = leftPad(point.getY().toBigInteger().toRadixString(16), 64);
     }
-    List<int> data = List.from(SMUtils.hexStringToBytes(userId + a + b + gx + gy + px + py));
+    List<int> data =
+        List.from(SMUtils.hexStringToBytes(userId + a + b + gx + gy + px + py));
 
     final int entl = userId.length * 4;
     data.insert(0, entl & 0x00ff);
     data.insert(0, (entl >> 8) & 0x00ff);
 
-    List<int> z = SMUtils.hexStringToBytes(
-        SM3.hashBytes(data));
+    List<int> z = SMUtils.hexStringToBytes(SM3.hashBytes(data));
 
     return SM3.hashBytes(z + SMUtils.hexStringToBytes(hashHex));
   }

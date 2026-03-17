@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names, constant_identifier_names
+
 import 'dart:convert';
 import 'dart:typed_data';
 
@@ -7,7 +9,9 @@ class SM3 {
   static List<int> hashBytesToBytes(List<int> array) {
     int inputLength = array.length * 8;
     int paddingLength = inputLength % 512;
-    paddingLength = paddingLength >= 448 ? 512 - (paddingLength % 448) - 1 : 448 - paddingLength - 1;
+    paddingLength = paddingLength >= 448
+        ? 512 - (paddingLength % 448) - 1
+        : 448 - paddingLength - 1;
 
     int size = (inputLength + paddingLength + 1 + 64) ~/ 8;
     Uint8List paddedData = Uint8List(size);
@@ -33,13 +37,15 @@ class SM3 {
 
       int start = 16 * i;
       for (int j = 0; j < 16; j++) {
-        W[j] = paddedData.buffer.asByteData().getUint32((start + j) * 4, Endian.big);
+        W[j] = paddedData.buffer
+            .asByteData()
+            .getUint32((start + j) * 4, Endian.big);
       }
 
       for (int j = 16; j < 68; j++) {
         W[j] = (_P1((W[j - 16] ^ W[j - 9]) ^ SMUtils.leftShift(W[j - 3], 15)) ^
-        SMUtils.leftShift(W[j - 13], 7)) ^
-        W[j - 6];
+                SMUtils.leftShift(W[j - 13], 7)) ^
+            W[j - 6];
       }
 
       for (int j = 0; j < 64; j++) {
@@ -59,13 +65,14 @@ class SM3 {
 
       for (int j = 0; j < 64; j++) {
         T = j >= 0 && j <= 15 ? _T1 : _T2;
-        SS1 = SMUtils.leftShift(SMUtils.leftShift(A, 12) + E + SMUtils.leftShift(T, j), 7);
+        SS1 = SMUtils.leftShift(
+            SMUtils.leftShift(A, 12) + E + SMUtils.leftShift(T, j), 7);
 
         SS2 = SS1 ^ SMUtils.leftShift(A, 12);
 
         TT1 = (j >= 0 && j <= 15
-            ? ((A ^ B) ^ C)
-            : (((A & B) | (A & C)) | (B & C))) +
+                ? ((A ^ B) ^ C)
+                : (((A & B) | (A & C)) | (B & C))) +
             D +
             SS2 +
             M[j];
@@ -142,12 +149,15 @@ class SM3 {
     } else {
       throw ArgumentError('Invalid input type');
     }
-    return hashBytes(Uint8List.fromList(oPadKey + hashBytesToBytes(iPadKey + inputBytes)));
+    return hashBytes(
+        Uint8List.fromList(oPadKey + hashBytesToBytes(iPadKey + inputBytes)));
   }
 
-  static int _P0(int X) => (X ^ SMUtils.leftShift(X, 9)) ^ SMUtils.leftShift(X, 17);
+  static int _P0(int X) =>
+      (X ^ SMUtils.leftShift(X, 9)) ^ SMUtils.leftShift(X, 17);
 
-  static int _P1(int X) => (X ^ SMUtils.leftShift(X, 15)) ^ SMUtils.leftShift(X, 23);
+  static int _P1(int X) =>
+      (X ^ SMUtils.leftShift(X, 15)) ^ SMUtils.leftShift(X, 23);
 
   static const List<int> _V = [
     0x7380166f,
