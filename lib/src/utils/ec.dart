@@ -6,43 +6,43 @@ class ECFieldElementFp {
     // todo if (x.compareTo(q) >= 0) error
   }
 
-  /// 判断相等
+  /// Determine equality
   bool equals(ECFieldElementFp other) {
     if (other == this) return true;
     return (q == other.q && x == other.x);
   }
 
-  /// 返回具体数值
+  /// Return the specific value
   BigInt toBigInteger() {
     return x;
   }
 
-  /// 取反
+  /// Negate
   ECFieldElementFp negate() {
     return ECFieldElementFp(q, (-x) % q);
   }
 
-  /// 相加
+  /// Add
   ECFieldElementFp add(ECFieldElementFp b) {
     return ECFieldElementFp(q, (x + b.toBigInteger()) % q);
   }
 
-  /// 相减
+  /// Subtract
   ECFieldElementFp subtract(ECFieldElementFp b) {
     return ECFieldElementFp(q, (x - b.toBigInteger()) % q);
   }
 
-  /// 相乘
+  /// Multiply
   ECFieldElementFp multiply(ECFieldElementFp b) {
     return ECFieldElementFp(q, (x * b.toBigInteger()) % q);
   }
 
-  /// 相除
+  /// Divide
   ECFieldElementFp divide(ECFieldElementFp b) {
     return ECFieldElementFp(q, (x * b.toBigInteger().modInverse(q)) % q);
   }
 
-  /// 平方
+  /// Square
   ECFieldElementFp square() {
     return ECFieldElementFp(q, (x * x) % q);
   }
@@ -186,7 +186,7 @@ class ECCurveFp {
   ECCurveFp(this.q, BigInt a, BigInt b) {
     this.a = fromBigInteger(a);
     this.b = fromBigInteger(b);
-    infinity = ECPointFp(this, null, null); // 无穷远点
+    infinity = ECPointFp(this, null, null); // infinity point
   }
 
   final BigInt q;

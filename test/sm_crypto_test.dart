@@ -10,16 +10,16 @@ void main() async {
   group('SM2', () {
     const data = '12345';
     final keypair = SM2.generateKeyPair();
-    String privateKey = keypair.privateKey; // 私钥
-    String publicKey = keypair.publicKey; // 公钥
+    String privateKey = keypair.privateKey; // private key
+    String publicKey = keypair.publicKey; // public key
 
-    test('加密和解密', () {
+    test('encryption and decryption', () {
       String encryptData = SM2.encrypt(data, publicKey);
       String decryptData = SM2.decrypt(encryptData, privateKey);
       expect(decryptData, data);
     });
 
-    test('公钥压缩', () {
+    test('public key compression', () {
       String compressedPublicKey = SM2.compressPublicKey(publicKey);
       expect(compressedPublicKey.length, 66);
       bool isEqual = SM2.comparePublicKey(compressedPublicKey, publicKey);
@@ -28,19 +28,19 @@ void main() async {
       expect(isValid, true);
     });
 
-    test('签名', () {
+    test('signature', () {
       String sigValue = SM2.signature(data, privateKey);
       bool verifyValue = SM2.verifySignature(data, sigValue, publicKey);
       expect(verifyValue, true);
     });
 
-    test('签名（不做公钥推导）', () {
+    test('signature (without public key derivation)', () {
       String sigValue = SM2.signature(data, privateKey, publicKey: publicKey);
       bool verifyValue = SM2.verifySignature(data, sigValue, publicKey);
       expect(verifyValue, true);
     });
 
-    test('使用sm3杂凑的签名', () {
+    test('signature with SM3 hash', () {
       String sigValue = SM2.signature(data, privateKey,
           publicKey: publicKey, hash: true, userId: 'userId');
       bool verifyValue =
@@ -49,7 +49,7 @@ void main() async {
     });
 
     test('sign', () {
-      //增加userId
+      // add userId
       String sigValue = SM2.signature(data, privateKey,
           publicKey: publicKey, hash: true, userId: 'userId');
       bool verifyValue = SM2.verifySignature(data, sigValue, publicKey,
@@ -58,7 +58,7 @@ void main() async {
     });
 
     test('sign', () {
-      //ASN1 der编解码
+      // ASN1 der encoding/decoding
       String sigValue =
           SM2.signature(data, privateKey, publicKey: publicKey, der: true);
       bool verifyValue =

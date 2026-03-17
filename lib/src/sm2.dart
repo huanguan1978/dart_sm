@@ -209,7 +209,7 @@ class SM2 {
         ? SMUtils.utf8ToHexString(msg)
         : SMUtils.bytesToHexString(msg);
     if (hash) {
-      // sm3杂凑
+      // sm3 hash
       publicKey = publicKey ?? _getPublicKeyFromPrivateKey(privateKey);
       hashHex = _getHash(hashHex, publicKey, userId);
     }
@@ -230,7 +230,7 @@ class SM2 {
       s = (dAInverse * (k - (r * dA))) % _ecParam.n;
     } while (s == BigInt.zero);
 
-    if (der) return ASN1Utils.encodeDer(r, s); // asn.1 der 编码
+    if (der) return ASN1Utils.encodeDer(r, s); // asn.1 der encoding
     return leftPad(r.toRadixString(16), 64) + leftPad(s.toRadixString(16), 64);
   }
 

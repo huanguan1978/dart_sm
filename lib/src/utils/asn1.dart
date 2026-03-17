@@ -1,5 +1,3 @@
-
-
 class _ASN1Object {
   String? tlv;
   String t = '00';
@@ -10,7 +8,7 @@ class _ASN1Object {
     tlv = null;
   }
 
-  /// 获取 der 编码比特流16进制串
+  /// Get the der encoded bit stream hexadecimal string
   String getEncodedHex() {
     if (tlv == null) {
       v = getValue();
@@ -21,7 +19,7 @@ class _ASN1Object {
   }
 
   String getLength() {
-    int n = v.length ~/ 2; // 字节数
+    int n = v.length ~/ 2; // number of bytes
     String nHex = n.toRadixString(16);
     if (nHex.length % 2 == 1) nHex = '0$nHex';
 
@@ -40,7 +38,7 @@ class _ASN1Object {
 
 class _DERInteger extends _ASN1Object {
   _DERInteger(BigInt? bigint) : super() {
-    t = '02'; // 整型标签说明
+    t = '02'; // integer tag description
     if (bigint != null) v = bigintToValue(bigint);
   }
 
@@ -76,18 +74,18 @@ class _DERInteger extends _ASN1Object {
 
       BigInt twosComplementBigInt = bitmaskBigInt ^ inputBigInt;
       twosComplementBigInt = twosComplementBigInt + BigInt.one;
-      hexString = twosComplementBigInt.toRadixString(16).replaceAll(RegExp(r'^-'), '');
+      hexString =
+          twosComplementBigInt.toRadixString(16).replaceAll(RegExp(r'^-'), '');
     }
     return hexString;
   }
-
 }
 
 class _DERSequence extends _ASN1Object {
   List<_ASN1Object> asn1Array;
 
   _DERSequence(this.asn1Array) : super() {
-    t = '30'; // 序列标签说明
+    t = '30'; // sequence tag description
   }
 
   @override
@@ -103,7 +101,7 @@ int getLenOfL(String str, int start) {
 }
 
 int getL(String str, int start) {
-  // 获取 l
+  // get l
   int len = getLenOfL(str, start);
   String l = str.substring(start + 2, start + 2 + len * 2);
 
@@ -121,7 +119,7 @@ int getStartOfV(String str, int start) {
 }
 
 class ASN1Utils {
-  /// ASN.1 der 编码，针对 sm2 签名
+  /// ASN.1 der encoding, for sm2 signature
   static String encodeDer(BigInt r, BigInt s) {
     final derR = _DERInteger(r);
     final derS = _DERInteger(s);
@@ -129,7 +127,7 @@ class ASN1Utils {
     return derSeq.getEncodedHex();
   }
 
-  /// 解析 ASN.1 der，针对 sm2 验签
+  /// Parse ASN.1 der, for sm2 verification
   static Map<String, BigInt> decodeDer(String input) {
     int start = getStartOfV(input, 0);
 

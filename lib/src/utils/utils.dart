@@ -1,11 +1,11 @@
-
 import 'dart:convert';
 
-class SMUtils{
-  static int leftShift(int x, int n){
+class SMUtils {
+  static int leftShift(int x, int n) {
     int s = n & 31;
     x = (x & 0xFFFFFFFF).toSigned(32);
-    return (((x << s) | ((x & 0xFFFFFFFF) >> (32 - s))) & 0xFFFFFFFF).toSigned(32);
+    return (((x << s) | ((x & 0xFFFFFFFF) >> (32 - s))) & 0xFFFFFFFF)
+        .toSigned(32);
   }
 
   static int rightShift(int x, int n) {
@@ -34,7 +34,7 @@ class SMUtils{
 
   static String utf8ToHexString(String input) {
     List<int> utf8Encoded = utf8.encode(input);
-    // 转换到16进制
+    // convert to hexadecimal
     StringBuffer hexChars = StringBuffer();
     for (int i = 0; i < utf8Encoded.length; i++) {
       int bite = utf8Encoded[i];
