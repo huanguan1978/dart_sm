@@ -45,7 +45,8 @@ void main() async {
           publicKey: publicKey, hash: true, userId: 'userId');
       bool verifyValue =
           SM2.verifySignature(data, sigValue, publicKey, hash: true);
-      expect(verifyValue, true);
+      // not adding userId will cause verification failure
+      expect(verifyValue, false);
     });
 
     test('sign', () {
